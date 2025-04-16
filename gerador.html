@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Gerador de Senhas e Usernames</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #007bff, #00c6ff);
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: fadeIn 1s ease-in;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .container {
+      background: white;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+      text-align: center;
+      animation: fadeIn 1s ease-out;
+      max-width: 90%;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+      color: #007bff;
+    }
+
+    #saida {
+      font-weight: bold;
+      margin: 20px 0;
+      font-size: 24px;
+      color: #333;
+      min-height: 30px;
+      letter-spacing: 2px;
+    }
+
+    button {
+      padding: 12px 30px;
+      font-size: 16px;
+      cursor: pointer;
+      background: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      transition: background 0.3s, transform 0.2s;
+      margin: 5px;
+    }
+
+    button:hover {
+      background: #0056b3;
+      transform: scale(1.05);
+    }
+
+    .digitando span {
+      display: inline-block;
+      opacity: 0;
+      animation: aparecer 0.05s forwards;
+    }
+
+    @keyframes aparecer {
+      to { opacity: 1; }
+    }
+
+    .mensagem {
+      color: green;
+      margin-top: 10px;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 id="titulo">Gerador de Senhas</h1>
+    <div id="saida">Clique no botão para gerar</div>
+    <button onclick="gerarAtual()">Gerar</button>
+    <button onclick="copiarAtual()">Copiar</button>
+    <br><br>
+    <button onclick="trocarAba()">Ir para <span id="proxima">Username</span></button>
+    <div id="mensagem" class="mensagem">Copiado!</div>
+  </div>
+
+  <script>
+    let senhaAtual = '';
+    let aba = 'senha'; // senha ou username
+
+    function gerarSenha() {
+      const prefixo = "T0";
+      const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+      let senha = prefixo;
+
+      for (let i = 0; i < 8; i++) {
+        const randomIndex = Math.floor(Math.random() * caracteres.length);
+        senha += caracteres[randomIndex];
+      }
+
+      senhaAtual = senha;
+      mostrarComDigitacao(senha);
+    }
+
+    function gerarUsername() {
+      const prefixo = "WDL";
+      const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+      let username = prefixo;
+
+      for (let i = 0; i < 7; i++) {
+        const randomIndex = Math.floor(Math.random() * caracteres.length);
+        username += caracteres[randomIndex];
+      }
+
+      senhaAtual = username;
+      mostrarComDigitacao(username);
+    }
+
+    function mostrarComDigitacao(texto) {
+      const saidaDiv = document.getElementById('saida');
+      saidaDiv.innerHTML = '';
+      saidaDiv.classList.remove('digitando');
+
+      for (let i = 0; i < texto.length; i++) {
+        const span = document.createElement('span');
+        span.textContent = texto[i];
+        span.style.animationDelay = `${i * 50}ms`;
+        saidaDiv.appendChild(span);
+      }
+
+      saidaDiv.classList.add('digitando');
+    }
+
+    function copiarAtual() {
+      if (!senhaAtual) {
+        alert("Gere algo antes de copiar!");
+        return;
+      }
+
+      const textarea = document.createElement("textarea");
+      textarea.value = senhaAtual;
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand("copy");
+      document.body.removeChild(textarea);
+
+      const mensagem = document.getElementById('mensagem');
+      mensagem.style.display = 'block';
+      setTimeout(() => mensagem.style.display = 'none', 2000);
+    }
+
+    function trocarAba() {
+      if (aba === 'senha') {
+        aba = 'username';
+        document.getElementById('titulo').textContent = 'Gerente Username';
+        document.getElementById('saida').textContent = 'Clique no botão para gerar username';
+        document.getElementById('proxima').textContent = 'Senha';
+        senhaAtual = '';
+      } else {
+        aba = 'senha';
+        document.getElementById('titulo').textContent = 'Gerador de Senhas';
+        document.getElementById('saida').textContent = 'Clique no botão para gerar senha';
+        document.getElementById('proxima').textContent = 'Username';
+        senhaAtual = '';
+      }
+    }
+
+    function gerarAtual() {
+      if (aba === 'senha') {
+        gerarSenha();
+      } else {
+        gerarUsername();
+      }
+    }
+  </script>
+</body>
+</html>
