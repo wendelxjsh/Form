@@ -951,7 +951,7 @@ local SetProps, SetChildren, InsertTheme, Create do
 		end
 	end
 	
-	pcall(Save, "redz library V5.json")
+	pcall(Save, "Shinra Hub V5.json")
 end
 
 local Funcs = {} do
@@ -1093,7 +1093,7 @@ local GetFlag, SetFlag, CheckFlag do
 end
 
 local ScreenGui = Create("ScreenGui", CoreGui, {
-	Name = "redz Library V5",
+	Name = "Shinra Hub V5",
 }, {
 	Create("UIScale", {
 		Scale = UIScale,
@@ -1518,7 +1518,7 @@ function redzlib:MakeWindow(Configs)
 		BackgroundTransparency = 1,
 		Name = "Control Hub Size"
 	})), MakeDrag(Create("ImageButton", MainFrame, {
-		Size = UDim2.new(0, 20, 1, -30),
+		Size = UDim2.new(0, 60, 1, -30),
 		Position = UDim2.new(0, MainScroll.Size.X.Offset, 1, 0),
 		AnchorPoint = Vector2.new(0.5, 1),
 		Active = true,
